@@ -7,6 +7,7 @@ export interface TSSchema {
   isRef: boolean;
   isArray: boolean;
   enum: any[];
+  allOf: TSSchema[];
   properties: { [name: string]: TSSchema };
 }
 

@@ -1,6 +1,7 @@
 import { Schema, BaseSchema } from "swagger-schema-official";
 import { getRefName, isSchema, isRequired, mapType, isNullable } from './utils';
 import { TSSchema, SwaggerSchemaType, SwaggerSchemaFormat } from "./types";
+import { Schema as SwaggerSchema } from "swagger-schema-official";
 
 /**
  * Map swagger types to TypeScript types
@@ -15,7 +16,8 @@ export default function mapTS(schema: Schema | BaseSchema, required: boolean = f
     isRef: false,
     isNullable: isNullable(schema),
     enum: [],
-    properties: {}
+    allOf: [],
+    properties: {},
   };
 
   // Has enum values
@@ -41,6 +43,13 @@ export default function mapTS(schema: Schema | BaseSchema, required: boolean = f
         {} as any
       );
     }
+
+    // allOf
+    const swschema: SwaggerSchema = schema as SwaggerSchema;
+    if (swschema.allOf !== undefined) {
+      tsSchema.allOf = swschema.allOf.map((x) => mapTS(x, required));
+    }
+
     return tsSchema;
   }
 

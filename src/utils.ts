@@ -162,7 +162,8 @@ export function emptySchema(): TSSchema {
     isNullable: false,
     isArray: false,
     properties: {},
-    enum: []
+    enum: [],
+    allOf: [],
   };
 }
 
